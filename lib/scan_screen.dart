@@ -12,9 +12,7 @@ import 'app_data.dart';
 
 enum ScanStep {
   methodSelection,
-  controlledChoice,
-  wildChoice,
-  realTimeChoice,
+  choice,
   camera,
   preview,
   result,
@@ -35,6 +33,20 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   bool _isFromCamera = false;
   final ImagePicker _picker = ImagePicker();
   ScanStep _previousChoiceStep = ScanStep.methodSelection;
+
+  // The classifier model picked from the cards on the Classify Plant page.
+  // [_selectedModel] is sent as the `model` key to /predict; [_selectedModelLabel]
+  // is shown as the title on the choice and preview screens. Defaults to VGG19.
+  String _selectedModel = 'keras';
+  String _selectedModelLabel = 'VGG19 (Standard)';
+
+  void _selectModel(String apiValue, String label) {
+    setState(() {
+      _selectedModel = apiValue;
+      _selectedModelLabel = label;
+      _currentStep = ScanStep.choice;
+    });
+  }
 
   // عنوان السيرفر الافتراضي
   String _serverIp = "192.168.1.14";
@@ -110,12 +122,19 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     }
   }
 
+  bool _isChoiceStep(ScanStep step) => step == ScanStep.choice;
+
   Future<void> _requestPermissionAndStart() async {
+    final originStep = _currentStep;
     var status = await Permission.camera.request();
     if (status.isGranted) {
       await _initCameraFlow();
       if (cameras.isNotEmpty) {
-        _previousChoiceStep = _currentStep;
+        // Keep the original choice screen as the back target; don't overwrite
+        // it when re-scanning from the preview ("Scan Again").
+        if (_isChoiceStep(originStep)) {
+          _previousChoiceStep = originStep;
+        }
         _changeStep(ScanStep.camera);
       }
     }
@@ -169,6 +188,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _pickImageFromGallery() async {
+    final originStep = _currentStep;
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -178,6 +198,11 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         setState(() {
           _imageFile = pickedFile;
           _isFromCamera = false;
+          // Remember which choice screen we came from for the preview's
+          // back button; ignore re-picks made from the preview itself.
+          if (_isChoiceStep(originStep)) {
+            _previousChoiceStep = originStep;
+          }
           _currentStep = ScanStep.preview;
         });
       }
@@ -199,6 +224,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       var url = Uri.parse("http://95.179.253.41:8080/api/predict");
 
       var request = http.MultipartRequest('POST', url);
+      request.fields['model'] = _selectedModel;
       request.files.add(
         await http.MultipartFile.fromPath('image', _imageFile!.path),
       );
@@ -286,30 +312,12 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           theme,
           key: const ValueKey('methodSelection'),
         );
-      case ScanStep.controlledChoice:
+      case ScanStep.choice:
         return _buildChoiceView(
-          key: const ValueKey('controlledChoice'),
-          title: 'Controlled Environment',
+          key: const ValueKey('choice'),
+          title: _selectedModelLabel,
           subtitle: 'Scan or Upload',
           showGallery: true,
-          isDark: isDark,
-          theme: theme,
-        );
-      case ScanStep.wildChoice:
-        return _buildChoiceView(
-          key: const ValueKey('wildChoice'),
-          title: 'Wild Environment',
-          subtitle: 'Scan or Upload',
-          showGallery: true,
-          isDark: isDark,
-          theme: theme,
-        );
-      case ScanStep.realTimeChoice:
-        return _buildChoiceView(
-          key: const ValueKey('realTimeChoice'),
-          title: 'Real Time Classification',
-          subtitle: 'Upload an image for classification',
-          showGallery: false,
           isDark: isDark,
           theme: theme,
         );
@@ -320,9 +328,11 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           key: const ValueKey('preview'),
           imageFile: _imageFile!,
           isFromCamera: _isFromCamera,
+          title: _selectedModelLabel,
           onSelectDifferent: _isFromCamera
               ? _requestPermissionAndStart
               : _pickImageFromGallery,
+          onBack: () => _changeStep(_previousChoiceStep),
           onSubmit: _handleClassificationSubmit,
         );
       case ScanStep.result:
@@ -389,30 +399,31 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     theme,
                     isDark,
                     icon: Icons.psychology_outlined,
-                    title: 'Controlled Environment',
+                    title: 'VGG19 (Standard)',
                     desc: 'Laboratory or indoor conditions.',
                     color: const Color(0xFF06402B),
-                    onTap: () => _changeStep(ScanStep.controlledChoice),
+                    onTap: () => _selectModel('keras', 'VGG19 (Standard)'),
                   ),
                   const SizedBox(height: 20),
                   _buildHeroMethodCard(
                     theme,
                     isDark,
                     icon: Icons.forest_outlined,
-                    title: 'Wild Environment',
+                    title: 'Unified Plant Mode',
                     desc: 'Natural environments or outdoor.',
                     color: const Color(0xFF2E7D32),
-                    onTap: () => _changeStep(ScanStep.wildChoice),
+                    onTap: () => _selectModel('nemotron', 'Unified Plant Mode'),
                   ),
                   const SizedBox(height: 20),
                   _buildHeroMethodCard(
                     theme,
                     isDark,
                     icon: Icons.videocam_outlined,
-                    title: 'Real-time Mode',
+                    title: 'Data-efficient Image Transformer',
                     desc: 'Continuous camera feed analysis.',
                     color: const Color(0xFF1B5E20),
-                    onTap: () => _changeStep(ScanStep.realTimeChoice),
+                    onTap: () =>
+                        _selectModel('nemotron-vl', 'Data-efficient Image Transformer'),
                   ),
                 ],
               ),

@@ -5,14 +5,18 @@ import 'package:image_picker/image_picker.dart';
 class PreviewScreen extends StatefulWidget {
   final XFile imageFile;
   final bool isFromCamera;
+  final String title;
   final VoidCallback onSelectDifferent;
+  final VoidCallback onBack;
   final Future<void> Function() onSubmit;
 
   const PreviewScreen({
     super.key,
     required this.imageFile,
     required this.isFromCamera,
+    required this.title,
     required this.onSelectDifferent,
+    required this.onBack,
     required this.onSubmit,
   });
 
@@ -41,7 +45,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Column(
         children: [
-          _buildHeader(isDark, 'Image Preview', 'Verify your plant image'),
+          _buildHeader(isDark, widget.title, 'Verify your plant image'),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
@@ -122,8 +126,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   ),
                   const SizedBox(height: 24),
                   _buildActionButton(
-                    context, 
-                    _isAnalyzing ? 'Processing...' : 'Submit for Classification', 
+                    context,
+                    _isAnalyzing ? 'Processing...' : 'Submit for Classification',
                     Icons.analytics_outlined, 
                     true, 
                     isDark, 
@@ -165,7 +169,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
           IconButton(
             icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
             tooltip: 'Back',
-            onPressed: _isAnalyzing ? null : widget.onSelectDifferent,
+            onPressed: _isAnalyzing ? null : widget.onBack,
           ),
           const SizedBox(width: 4),
           Expanded(
