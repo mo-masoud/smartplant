@@ -3,6 +3,7 @@ import 'userflow-dashboard_screen.dart';
 import 'scan_screen.dart';
 import 'records_screen.dart';
 import 'settings_screen.dart';
+import 'widgets/pressable.dart';
 
 class MainScreenEmployee extends StatefulWidget {
   const MainScreenEmployee({super.key});
@@ -93,39 +94,41 @@ class _MainScreenEmployeeState extends State<MainScreenEmployee> {
 
   Widget _buildNavItem(int index, IconData icon, String label, bool isDark) {
     bool isSelected = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () => setIndex(index),
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: EdgeInsets.symmetric(
-          horizontal: isSelected ? 16 : 8,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : (isDark ? Colors.grey.shade600 : Colors.grey.shade400),
-              size: 24,
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
+    return Pressable(
+      child: GestureDetector(
+        onTap: () => setIndex(index),
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: EdgeInsets.symmetric(
+            horizontal: isSelected ? 16 : 8,
+            vertical: 10,
+          ),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? Colors.white : (isDark ? Colors.grey.shade600 : Colors.grey.shade400),
+                size: 24,
               ),
+              if (isSelected) ...[
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

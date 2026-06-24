@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'app_data.dart';
 import 'main_screen.dart';
+import 'widgets/pressable.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -99,18 +100,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                MainScreen.of(context)?.setIndex(0);
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+          Pressable(
+            child: GestureDetector(
+              onTap: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                } else {
+                  MainScreen.of(context)?.setIndex(0);
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
+                child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -368,20 +371,22 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildExportButton(String label, IconData icon, bool isDark, VoidCallback onTap) {
-    return OutlinedButton(
-      onPressed: onTap,
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        side: BorderSide(color: isDark ? Colors.white12 : Colors.grey.shade300),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 16, color: Colors.grey),
-          const SizedBox(width: 6),
-          Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold)),
-        ],
+    return Pressable(
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          side: BorderSide(color: isDark ? Colors.white12 : Colors.grey.shade300),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 16, color: Colors.grey),
+            const SizedBox(width: 6),
+            Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold)),
+          ],
+        ),
       ),
     );
   }

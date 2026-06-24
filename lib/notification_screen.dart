@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'notification_model.dart';
+import 'widgets/pressable.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -13,16 +14,20 @@ class NotificationScreen extends StatelessWidget {
         title: const Text('Delete Notification'),
         content: Text('Are you sure you want to delete "$title"?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(
-            onPressed: () async {
-              await FirebaseFirestore.instance.collection('notifications').doc(id).delete();
-              if (context.mounted) {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notification deleted')));
-              }
-            },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          Pressable(
+            child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ),
+          Pressable(
+            child: TextButton(
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('notifications').doc(id).delete();
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Notification deleted')));
+                }
+              },
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            ),
           ),
         ],
       ),
@@ -46,12 +51,14 @@ class NotificationScreen extends StatelessWidget {
           )
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, 
-            size: 20, 
-            color: theme.textTheme.bodyLarge?.color
+        leading: Pressable(
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_rounded,
+              size: 20,
+              color: theme.textTheme.bodyLarge?.color
+            ),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -98,7 +105,8 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Widget _buildNotificationItem(BuildContext context, NotificationModel item, bool isDark, ThemeData theme) {
-    return GestureDetector(
+    return Pressable(
+      child: GestureDetector(
       onTap: () {
         FirebaseFirestore.instance.collection('notifications').doc(item.id).update({'isRead': true});
       },
@@ -158,9 +166,11 @@ class NotificationScreen extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => _showDeleteDialog(context, item.id, item.title),
-                        child: Icon(Icons.close_rounded, size: 18, color: theme.hintColor.withAlpha(100)),
+                      Pressable(
+                        child: GestureDetector(
+                          onTap: () => _showDeleteDialog(context, item.id, item.title),
+                          child: Icon(Icons.close_rounded, size: 18, color: theme.hintColor.withAlpha(100)),
+                        ),
                       ),
                     ],
                   ),
@@ -189,6 +199,7 @@ class NotificationScreen extends StatelessWidget {
               ),
           ],
         ),
+      ),
       ),
     );
   }

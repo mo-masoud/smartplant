@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class EmployeeAnalyticsScreen extends StatefulWidget {
   final Employee employee;
@@ -25,15 +26,17 @@ class _EmployeeAnalyticsScreenState extends State<EmployeeAnalyticsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300.withAlpha(150),
-                      shape: BoxShape.circle,
+                child: Pressable(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300.withAlpha(150),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.black54),
                     ),
-                    child: const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.black54),
                   ),
                 ),
               ),
@@ -253,21 +256,23 @@ class _EmployeeAnalyticsScreenState extends State<EmployeeAnalyticsScreen> {
   }
 
   Widget _buildToggleButton(String label, bool isSelected) {
-    return GestureDetector(
-      onTap: () => setState(() => isMonthSelected = label == 'Month'),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black54,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
+    return Pressable(
+      child: GestureDetector(
+        onTap: () => setState(() => isMonthSelected = label == 'Month'),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black54,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   final Employee? employeeToEdit;
@@ -83,12 +84,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
-                    child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+                Pressable(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
+                      child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -174,27 +177,31 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _saveEmployee,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          elevation: 0,
+                    Pressable(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _saveEmployee,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            elevation: 0,
+                          ),
+                          child: Text(widget.employeeToEdit == null ? 'Create Employee Account' : 'Update Employee', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                         ),
-                        child: Text(widget.employeeToEdit == null ? 'Create Employee Account' : 'Update Employee', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 18)),
-                        child: Text('Cancel', style: TextStyle(color: theme.hintColor, fontWeight: FontWeight.bold)),
+                    Pressable(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 18)),
+                          child: Text('Cancel', style: TextStyle(color: theme.hintColor, fontWeight: FontWeight.bold)),
+                        ),
                       ),
                     ),
                   ],

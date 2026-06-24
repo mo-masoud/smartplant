@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_data.dart';
 import 'profile_screen.dart';
 import 'notification_screen.dart';
+import 'widgets/pressable.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -20,16 +21,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: const Text('Logout'),
           content: const Text('Are you sure you want to logout?'),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            Pressable(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close dialog
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-              child: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+            Pressable(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close dialog
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              ),
             ),
           ],
         );
@@ -104,12 +109,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         title: 'Notifications',
                         child: Column(
                           children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: const Text('View Notifications', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
-                              subtitle: const Text('Browse all previous alerts', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen())),
+                            Pressable(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: const Text('View Notifications', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+                                subtitle: const Text('Browse all previous alerts', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen())),
+                              ),
                             ),
                             const Divider(height: 1),
                             _buildSwitchTile(
@@ -250,17 +257,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen())),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                side: BorderSide(color: Colors.grey.shade200),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          Pressable(
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen())),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: Colors.grey.shade200),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                child: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w500)),
               ),
-              child: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w500)),
             ),
           ),
         ],
@@ -309,20 +318,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildToggleButton(String label, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF06402B) : Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Theme.of(context).textTheme.bodyLarge?.color,
-            fontWeight: FontWeight.bold,
+    return Pressable(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF06402B) : Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Theme.of(context).textTheme.bodyLarge?.color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -380,24 +391,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildLogoutButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () => _showLogoutConfirmation(context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red.shade700,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 0,
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.logout_rounded, size: 20),
-            SizedBox(width: 10),
-            Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ],
+    return Pressable(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () => _showLogoutConfirmation(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red.shade700,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 0,
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.logout_rounded, size: 20),
+              SizedBox(width: 10),
+              Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );

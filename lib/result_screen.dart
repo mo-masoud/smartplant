@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class ResultScreen extends StatelessWidget {
   final XFile imageFile;
@@ -84,12 +85,14 @@ class ResultScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: onBack,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+          Pressable(
+            child: GestureDetector(
+              onTap: onBack,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: Colors.white.withAlpha(30), shape: BoxShape.circle),
+                child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -213,24 +216,26 @@ class ResultScreen extends StatelessWidget {
   }
 
   Widget _buildActionButton(BuildContext context, String label, IconData icon, bool isDark, VoidCallback onTap) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isDark ? const Color(0xFF042016) : Colors.white,
-          foregroundColor: isDark ? Colors.white : const Color(0xFF06402B),
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          side: isDark ? BorderSide(color: Colors.greenAccent.withAlpha(50)) : null,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 20),
-            const SizedBox(width: 8),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ],
+    return Pressable(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isDark ? const Color(0xFF042016) : Colors.white,
+            foregroundColor: isDark ? Colors.white : const Color(0xFF06402B),
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            side: isDark ? BorderSide(color: Colors.greenAccent.withAlpha(50)) : null,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 20),
+              const SizedBox(width: 8),
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );

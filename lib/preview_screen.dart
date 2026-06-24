@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'widgets/pressable.dart';
 
 class PreviewScreen extends StatefulWidget {
   final XFile imageFile;
@@ -166,10 +167,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
-            tooltip: 'Back',
-            onPressed: _isAnalyzing ? null : widget.onBack,
+          Pressable(
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+              tooltip: 'Back',
+              onPressed: _isAnalyzing ? null : widget.onBack,
+            ),
           ),
           const SizedBox(width: 4),
           Expanded(
@@ -194,10 +197,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Widget _buildActionButton(BuildContext context, String label, IconData icon, bool isPrimary, bool isDark, VoidCallback? onTap) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onTap,
+    return Pressable(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: isPrimary 
               ? (isDark ? const Color(0xFF042016) : const Color(0xFF06402B)) 
@@ -221,6 +225,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
             const SizedBox(width: 8),
             Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ],
+        ),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'scan_screen.dart';
 import 'records_screen.dart';
 import 'profile_screen.dart';
 import 'notification_screen.dart';
+import 'widgets/pressable.dart';
 
 class DashboardScreenEmployee extends StatelessWidget {
   const DashboardScreenEmployee({super.key});
@@ -93,50 +94,54 @@ class DashboardScreenEmployee extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
-          onTap: () => Navigator.push(context, _createSimpleRoute(const ProfileScreen())),
-          child: Row(
-            children: [
-              ListenableBuilder(
-                listenable: AppData(),
-                builder: (context, _) {
-                  final path = AppData().profileImageFor(AppData().currentUser);
-                  return CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.white24,
-                    backgroundImage: path != null ? FileImage(File(path)) : null,
-                    child: path == null
-                        ? const Icon(Icons.person, color: Colors.white, size: 35)
-                        : null,
-                  );
-                },
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Welcome back',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
-                  Text(
-                    AppData().currentUser,
-                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ],
+        Pressable(
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, _createSimpleRoute(const ProfileScreen())),
+            child: Row(
+              children: [
+                ListenableBuilder(
+                  listenable: AppData(),
+                  builder: (context, _) {
+                    final path = AppData().profileImageFor(AppData().currentUser);
+                    return CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.white24,
+                      backgroundImage: path != null ? FileImage(File(path)) : null,
+                      child: path == null
+                          ? const Icon(Icons.person, color: Colors.white, size: 35)
+                          : null,
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Welcome back',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                    Text(
+                      AppData().currentUser,
+                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        GestureDetector(
-          onTap: () => Navigator.push(context, _createSimpleRoute(const NotificationScreen())),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(25),
-              borderRadius: BorderRadius.circular(12),
+        Pressable(
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, _createSimpleRoute(const NotificationScreen())),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.notifications_none, color: Colors.white),
             ),
-            child: const Icon(Icons.notifications_none, color: Colors.white),
           ),
         ),
       ],
@@ -177,23 +182,25 @@ class DashboardScreenEmployee extends StatelessWidget {
   }
 
   Widget _buildActionCardWrapper(String title, IconData icon, Color bgColor, Color textColor, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withAlpha(isSelected ? 20 : 8), blurRadius: 10, offset: const Offset(0, 4))
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: textColor, size: 36),
-            const SizedBox(height: 12),
-            Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w800, fontSize: 15)),
-          ],
+    return Pressable(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withAlpha(isSelected ? 20 : 8), blurRadius: 10, offset: const Offset(0, 4))
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: textColor, size: 36),
+              const SizedBox(height: 12),
+              Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w800, fontSize: 15)),
+            ],
+          ),
         ),
       ),
     );

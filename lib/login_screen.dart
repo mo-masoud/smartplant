@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -261,13 +262,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     const SizedBox(height: 12),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Forgot password?',
-                          style: TextStyle(
-                            color: isDark ? Colors.greenAccent : const Color(0xFF06402B), 
-                            fontWeight: FontWeight.w600
+                      child: Pressable(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                              color: isDark ? Colors.greenAccent : const Color(0xFF06402B),
+                              fontWeight: FontWeight.w600
+                            ),
                           ),
                         ),
                       ),
@@ -330,25 +333,27 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   Widget _buildLoginButton(bool isDark) {
-    return SizedBox(
-      width: double.infinity,
-      height: 65,
-      child: ElevatedButton(
-        onPressed: _handleLogin,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          elevation: 8,
-          shadowColor: const Color(0xFF06402B).withAlpha(100),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Access System', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            SizedBox(width: 8),
-            Icon(Icons.arrow_forward_rounded, size: 20),
-          ],
+    return Pressable(
+      child: SizedBox(
+        width: double.infinity,
+        height: 65,
+        child: ElevatedButton(
+          onPressed: _handleLogin,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            elevation: 8,
+            shadowColor: const Color(0xFF06402B).withAlpha(100),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Access System', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              SizedBox(width: 8),
+              Icon(Icons.arrow_forward_rounded, size: 20),
+            ],
+          ),
         ),
       ),
     );

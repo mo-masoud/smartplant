@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class DataMgmtScreen extends StatefulWidget {
   const DataMgmtScreen({super.key});
@@ -32,27 +33,29 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(
-            onPressed: () {
-              if (nameController.text.isEmpty || codeController.text.isEmpty) return;
-              
-              final plant = Plant(
-                id: existingPlant?.id ?? 'P${DateTime.now().millisecondsSinceEpoch.toString().substring(10)}',
-                name: nameController.text,
-                code: codeController.text,
-                category: categoryController.text,
-                updatedAt: DateTime.now(),
-              );
+          Pressable(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel'))),
+          Pressable(
+            child: TextButton(
+              onPressed: () {
+                if (nameController.text.isEmpty || codeController.text.isEmpty) return;
 
-              if (existingPlant == null) {
-                AppData().addPlant(plant);
-              } else {
-                AppData().updatePlant(plant);
-              }
-              Navigator.pop(context);
-            },
-            child: Text(existingPlant == null ? 'Add' : 'Update'),
+                final plant = Plant(
+                  id: existingPlant?.id ?? 'P${DateTime.now().millisecondsSinceEpoch.toString().substring(10)}',
+                  name: nameController.text,
+                  code: codeController.text,
+                  category: categoryController.text,
+                  updatedAt: DateTime.now(),
+                );
+
+                if (existingPlant == null) {
+                  AppData().addPlant(plant);
+                } else {
+                  AppData().updatePlant(plant);
+                }
+                Navigator.pop(context);
+              },
+              child: Text(existingPlant == null ? 'Add' : 'Update'),
+            ),
           ),
         ],
       ),
@@ -127,12 +130,14 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.white.withAlpha(25), borderRadius: BorderRadius.circular(12)),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+          Pressable(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: Colors.white.withAlpha(25), borderRadius: BorderRadius.circular(12)),
+                child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -146,18 +151,20 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
   Widget _buildTabItem(String title, ThemeData theme, bool isDark) {
     bool isSelected = _selectedTab == title;
     return Expanded(
-      child: GestureDetector(
-        onTap: () => setState(() => _selectedTab = title),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: isSelected ? Colors.white : theme.hintColor, fontWeight: FontWeight.bold, fontSize: 14),
+      child: Pressable(
+        child: GestureDetector(
+          onTap: () => setState(() => _selectedTab = title),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: isSelected ? const Color(0xFF06402B) : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: isSelected ? Colors.white : theme.hintColor, fontWeight: FontWeight.bold, fontSize: 14),
+            ),
           ),
         ),
       ),
@@ -168,17 +175,19 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
     final plants = AppData().plants;
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () => _showPlantForm(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        Pressable(
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => _showPlantForm(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add), SizedBox(width: 8), Text('Add New Plant', style: TextStyle(fontWeight: FontWeight.bold))]),
             ),
-            child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.add), SizedBox(width: 8), Text('Add New Plant', style: TextStyle(fontWeight: FontWeight.bold))]),
           ),
         ),
         const SizedBox(height: 24),
@@ -296,13 +305,13 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
 
   Widget _buildActionButtons(VoidCallback onEdit, VoidCallback onDelete, bool isDark) {
     return Row(children: [
-      GestureDetector(onTap: onEdit, child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: const Color(0xFF06402B), shape: BoxShape.circle), child: const Icon(Icons.edit_outlined, color: Colors.white, size: 18))),
+      Pressable(child: GestureDetector(onTap: onEdit, child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: const Color(0xFF06402B), shape: BoxShape.circle), child: const Icon(Icons.edit_outlined, color: Colors.white, size: 18)))),
       const SizedBox(width: 12),
-      GestureDetector(onTap: onDelete, child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: isDark ? Colors.white.withAlpha(10) : Colors.grey.shade100, shape: BoxShape.circle), child: Icon(Icons.delete_outline_rounded, color: isDark ? Colors.redAccent : Colors.grey, size: 18))),
+      Pressable(child: GestureDetector(onTap: onDelete, child: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: isDark ? Colors.white.withAlpha(10) : Colors.grey.shade100, shape: BoxShape.circle), child: Icon(Icons.delete_outline_rounded, color: isDark ? Colors.redAccent : Colors.grey, size: 18)))),
     ]);
   }
 
   void _showDeleteDialog(BuildContext context, String type, String name, VoidCallback onDelete) {
-    showDialog(context: context, builder: (context) => AlertDialog(title: Text('Delete $type'), content: Text('Confirm delete $name?'), actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')), TextButton(onPressed: () { onDelete(); Navigator.pop(context); }, child: const Text('Delete', style: TextStyle(color: Colors.red)))]));
+    showDialog(context: context, builder: (context) => AlertDialog(title: Text('Delete $type'), content: Text('Confirm delete $name?'), actions: [Pressable(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel'))), Pressable(child: TextButton(onPressed: () { onDelete(); Navigator.pop(context); }, child: const Text('Delete', style: TextStyle(color: Colors.red))))]));
   }
 }

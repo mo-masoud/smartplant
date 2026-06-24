@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -88,16 +89,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: const Text('Logout'),
           content: const Text('Are you sure you want to logout from your account?'),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            Pressable(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close dialog
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-              child: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+            Pressable(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close dialog
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              ),
             ),
           ],
         );
@@ -163,46 +168,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
-                onPressed: () => Navigator.pop(context),
+              Pressable(
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
               const Text('Profile', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
               // SAVE BUTTON APPEARS HERE WHEN PHOTO CHOSEN AND DISAPPEARS AFTER CLICK
-              _showSaveButton 
-                ? TextButton(
-                    onPressed: _isSaving ? null : _saveProfile,
-                    child: _isSaving 
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                      : const Text('Save', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+              _showSaveButton
+                ? Pressable(
+                    child: TextButton(
+                      onPressed: _isSaving ? null : _saveProfile,
+                      child: _isSaving
+                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : const Text('Save', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+                    ),
                   )
                 : const SizedBox(width: 48),
             ],
           ),
           const SizedBox(height: 30),
-          GestureDetector(
-            onTap: _pickImage,
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundColor: Colors.white,
-                    backgroundImage: _imagePath != null ? FileImage(File(_imagePath!)) : null,
-                    child: _imagePath == null 
-                        ? const Icon(Icons.person, size: 70, color: Color(0xFF06402B)) 
-                        : null,
+          Pressable(
+            child: GestureDetector(
+              onTap: _pickImage,
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
+                    child: CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Colors.white,
+                      backgroundImage: _imagePath != null ? FileImage(File(_imagePath!)) : null,
+                      child: _imagePath == null
+                          ? const Icon(Icons.person, size: 70, color: Color(0xFF06402B))
+                          : null,
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle),
-                  child: const Icon(Icons.camera_alt_rounded, size: 18, color: Color(0xFF06402B)),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle),
+                    child: const Icon(Icons.camera_alt_rounded, size: 18, color: Color(0xFF06402B)),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -265,22 +276,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildLogoutButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: TextButton(
-        onPressed: () => _showLogoutConfirmation(context),
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          foregroundColor: Colors.red.shade700,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.logout_rounded),
-            SizedBox(width: 12),
-            Text('Logout from Account', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ],
+    return Pressable(
+      child: SizedBox(
+        width: double.infinity,
+        child: TextButton(
+          onPressed: () => _showLogoutConfirmation(context),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            foregroundColor: Colors.red.shade700,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.logout_rounded),
+              SizedBox(width: 12),
+              Text('Logout from Account', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );

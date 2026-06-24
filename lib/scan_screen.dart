@@ -9,6 +9,7 @@ import 'main.dart';
 import 'preview_screen.dart';
 import 'result_screen.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 enum ScanStep {
   methodSelection,
@@ -87,16 +88,20 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+          Pressable(
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
           ),
-          TextButton(
-            onPressed: () {
-              _saveIp(controller.text);
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
+          Pressable(
+            child: TextButton(
+              onPressed: () {
+                _saveIp(controller.text);
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
+            ),
           ),
         ],
       ),
@@ -354,12 +359,14 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.settings_ethernet,
-              color: isDark ? Colors.white30 : Colors.black12,
+          Pressable(
+            child: IconButton(
+              icon: Icon(
+                Icons.settings_ethernet,
+                color: isDark ? Colors.white30 : Colors.black12,
+              ),
+              onPressed: _showIpConfigDialog,
             ),
-            onPressed: _showIpConfigDialog,
           ),
         ],
       ),
@@ -443,62 +450,64 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: theme.cardColor,
-          borderRadius: BorderRadius.circular(32),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(isDark ? 40 : 5),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: (isDark ? Colors.greenAccent : color).withAlpha(20),
-                borderRadius: BorderRadius.circular(20),
+    return Pressable(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(isDark ? 40 : 5),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              child: Icon(
-                icon,
-                color: isDark ? Colors.greenAccent : color,
-                size: 32,
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: (isDark ? Colors.greenAccent : color).withAlpha(20),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  icon,
+                  color: isDark ? Colors.greenAccent : color,
+                  size: 32,
+                ),
               ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: theme.textTheme.bodyLarge?.color,
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: theme.textTheme.bodyLarge?.color,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    desc,
-                    style: TextStyle(fontSize: 13, color: theme.hintColor),
-                  ),
-                ],
+                    const SizedBox(height: 6),
+                    Text(
+                      desc,
+                      style: TextStyle(fontSize: 13, color: theme.hintColor),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: theme.hintColor.withAlpha(100),
-              size: 18,
-            ),
-          ],
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: theme.hintColor.withAlpha(100),
+                size: 18,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -581,18 +590,20 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () => _changeStep(ScanStep.methodSelection),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.white24,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.white,
-                size: 20,
+          Pressable(
+            child: GestureDetector(
+              onTap: () => _changeStep(ScanStep.methodSelection),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Colors.white24,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
           ),
@@ -624,64 +635,66 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     required bool isPrimary,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(
-          color: isPrimary
-              ? (isDark ? const Color(0xFF042016) : const Color(0xFF06402B))
-              : theme.cardColor,
-          borderRadius: BorderRadius.circular(32),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(isDark ? 40 : 8),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: isPrimary
-                    ? Colors.white.withAlpha(20)
-                    : (isDark ? Colors.greenAccent : const Color(0xFF06402B))
-                          .withAlpha(20),
-                borderRadius: BorderRadius.circular(20),
+    return Pressable(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(28),
+          decoration: BoxDecoration(
+            color: isPrimary
+                ? (isDark ? const Color(0xFF042016) : const Color(0xFF06402B))
+                : theme.cardColor,
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(isDark ? 40 : 8),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              child: Icon(
-                icon,
-                color: isPrimary
-                    ? Colors.white
-                    : (isDark ? Colors.greenAccent : const Color(0xFF06402B)),
-                size: 36,
+            ],
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isPrimary
+                      ? Colors.white.withAlpha(20)
+                      : (isDark ? Colors.greenAccent : const Color(0xFF06402B))
+                            .withAlpha(20),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  icon,
+                  color: isPrimary
+                      ? Colors.white
+                      : (isDark ? Colors.greenAccent : const Color(0xFF06402B)),
+                  size: 36,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: TextStyle(
-                color: isPrimary
-                    ? Colors.white
-                    : theme.textTheme.bodyLarge?.color,
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
+              const SizedBox(height: 20),
+              Text(
+                title,
+                style: TextStyle(
+                  color: isPrimary
+                      ? Colors.white
+                      : theme.textTheme.bodyLarge?.color,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: TextStyle(
-                color: isPrimary ? Colors.white70 : theme.hintColor,
-                fontSize: 14,
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: isPrimary ? Colors.white70 : theme.hintColor,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -776,9 +789,11 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           Positioned(
             top: 50,
             left: 20,
-            child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white, size: 30),
-              onPressed: () => _changeStep(_previousChoiceStep),
+            child: Pressable(
+              child: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                onPressed: () => _changeStep(_previousChoiceStep),
+              ),
             ),
           ),
           Positioned(
@@ -786,22 +801,24 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
             left: 0,
             right: 0,
             child: Center(
-              child: GestureDetector(
-                onTap: _takePicture,
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 4),
-                  ),
-                  child: Center(
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+              child: Pressable(
+                child: GestureDetector(
+                  onTap: _takePicture,
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 4),
+                    ),
+                    child: Center(
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ),

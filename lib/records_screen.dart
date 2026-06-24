@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'widgets/pressable.dart';
 
 class RecordsScreen extends StatefulWidget {
   final bool isUserRole;
@@ -18,15 +19,19 @@ class _RecordsScreenState extends State<RecordsScreen> {
         title: const Text('Delete Record'),
         content: Text('Are you sure you want to delete the classification for ${record.name}?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(
-            onPressed: () {
-              final globalIndex = AppData().records.indexOf(record);
-              if (globalIndex != -1) AppData().removeRecord(globalIndex);
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Record deleted')));
-            },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          Pressable(
+            child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ),
+          Pressable(
+            child: TextButton(
+              onPressed: () {
+                final globalIndex = AppData().records.indexOf(record);
+                if (globalIndex != -1) AppData().removeRecord(globalIndex);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Record deleted')));
+              },
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            ),
           ),
         ],
       ),
@@ -147,9 +152,11 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     // Only show delete option for Admin flow
                     if (!widget.isUserRole)
-                      GestureDetector(
-                        onTap: () => _showDeleteDialog(context, record),
-                        child: Icon(Icons.delete_outline_rounded, color: Colors.redAccent.withAlpha(150), size: 20),
+                      Pressable(
+                        child: GestureDetector(
+                          onTap: () => _showDeleteDialog(context, record),
+                          child: Icon(Icons.delete_outline_rounded, color: Colors.redAccent.withAlpha(150), size: 20),
+                        ),
                       ),
                   ],
                 ),

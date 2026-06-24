@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_data.dart';
 import 'main_screen.dart';
 import 'user_flow.dart';
+import 'widgets/pressable.dart';
 
 /// Global session to store the current user role during development.
 class AppSession {
@@ -126,9 +127,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
                           ),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.login_rounded, color: Colors.white),
-                            onPressed: () => _handleLogin('', customUsername: _usernameController.text),
+                          suffixIcon: Pressable(
+                            child: IconButton(
+                              icon: const Icon(Icons.login_rounded, color: Colors.white),
+                              onPressed: () => _handleLogin('', customUsername: _usernameController.text),
+                            ),
                           ),
                         ),
                       ),
@@ -177,11 +180,12 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     required IconData icon,
     required String role,
   }) {
-    return GestureDetector(
-      onTap: () => _handleLogin(role),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
+    return Pressable(
+      child: GestureDetector(
+        onTap: () => _handleLogin(role),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
@@ -229,6 +233,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
             ),
             const Icon(Icons.arrow_forward_ios_rounded, color: Colors.grey, size: 16),
           ],
+        ),
         ),
       ),
     );

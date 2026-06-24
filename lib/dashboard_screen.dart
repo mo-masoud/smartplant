@@ -8,6 +8,7 @@ import 'records_screen.dart';
 import 'reports_screen.dart';
 import 'profile_screen.dart';
 import 'notification_screen.dart';
+import 'widgets/pressable.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -101,7 +102,8 @@ class DashboardScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
+        Pressable(
+          child: GestureDetector(
           onTap: () => Navigator.push(context, _createSimpleRoute(const ProfileScreen())),
           child: Row(
             children: [
@@ -135,16 +137,19 @@ class DashboardScreen extends StatelessWidget {
               ),
             ],
           ),
+          ),
         ),
-        GestureDetector(
-          onTap: () => Navigator.push(context, _createSimpleRoute(const NotificationScreen())),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(25),
-              borderRadius: BorderRadius.circular(12),
+        Pressable(
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, _createSimpleRoute(const NotificationScreen())),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.notifications_none, color: Colors.white),
             ),
-            child: const Icon(Icons.notifications_none, color: Colors.white),
           ),
         ),
       ],
@@ -189,52 +194,56 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildActionCardWrapper(String title, IconData icon, Color bgColor, Color textColor, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withAlpha(isSelected ? 20 : 8), blurRadius: 10, offset: const Offset(0, 4))
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: textColor, size: 36),
-            const SizedBox(height: 12),
-            Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w800, fontSize: 15)),
-          ],
+    return Pressable(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withAlpha(isSelected ? 20 : 8), blurRadius: 10, offset: const Offset(0, 4))
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: textColor, size: 36),
+              const SizedBox(height: 12),
+              Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w800, fontSize: 15)),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildAddEmployeeButton(BuildContext context, bool isDark) {
-    return GestureDetector(
-      onTap: () => Navigator.push(context, _createSimpleRoute(const AddEmployeeScreen())),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF06402B).withAlpha(50) : const Color(0xFFB9D4C7).withAlpha(127),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.person_add_outlined, color: isDark ? Colors.greenAccent : const Color(0xFF06402B)),
-            const SizedBox(width: 12),
-            Text(
-              'Add Employee',
-              style: TextStyle(
-                color: isDark ? Colors.greenAccent : const Color(0xFF06402B),
-                fontWeight: FontWeight.w800,
-                fontSize: 16,
+    return Pressable(
+      child: GestureDetector(
+        onTap: () => Navigator.push(context, _createSimpleRoute(const AddEmployeeScreen())),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF06402B).withAlpha(50) : const Color(0xFFB9D4C7).withAlpha(127),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person_add_outlined, color: isDark ? Colors.greenAccent : const Color(0xFF06402B)),
+              const SizedBox(width: 12),
+              Text(
+                'Add Employee',
+                style: TextStyle(
+                  color: isDark ? Colors.greenAccent : const Color(0xFF06402B),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
