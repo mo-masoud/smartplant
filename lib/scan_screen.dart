@@ -11,13 +11,7 @@ import 'result_screen.dart';
 import 'app_data.dart';
 import 'widgets/pressable.dart';
 
-enum ScanStep {
-  methodSelection,
-  choice,
-  camera,
-  preview,
-  result,
-}
+enum ScanStep { methodSelection, choice, camera, preview, result }
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -277,7 +271,12 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         try {
           final decoded = jsonDecode(detail);
           if (decoded is Map) {
-            detail = (decoded['detail'] ?? decoded['error'] ?? decoded['message'] ?? detail).toString();
+            detail =
+                (decoded['detail'] ??
+                        decoded['error'] ??
+                        decoded['message'] ??
+                        detail)
+                    .toString();
           }
         } catch (_) {}
         if (detail.isEmpty) detail = 'No response body';
@@ -285,7 +284,9 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       }
     } catch (e) {
       debugPrint('Classification error: $e');
-      final message = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
+      final message = e is Exception
+          ? e.toString().replaceFirst('Exception: ', '')
+          : e.toString();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
@@ -407,7 +408,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     isDark,
                     icon: Icons.psychology_outlined,
                     title: 'VGG19 (Standard)',
-                    desc: 'Laboratory or indoor conditions.',
+                    desc: '',
                     color: const Color(0xFF06402B),
                     onTap: () => _selectModel('keras', 'VGG19 (Standard)'),
                   ),
@@ -417,7 +418,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     isDark,
                     icon: Icons.forest_outlined,
                     title: 'Unified Plant Mode',
-                    desc: 'Natural environments or outdoor.',
+                    desc: '',
                     color: const Color(0xFF2E7D32),
                     onTap: () => _selectModel('nemotron', 'Unified Plant Mode'),
                   ),
@@ -427,10 +428,12 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     isDark,
                     icon: Icons.videocam_outlined,
                     title: 'Data-efficient Image Transformer',
-                    desc: 'Continuous camera feed analysis.',
+                    desc: '',
                     color: const Color(0xFF1B5E20),
-                    onTap: () =>
-                        _selectModel('nemotron-vl', 'Data-efficient Image Transformer'),
+                    onTap: () => _selectModel(
+                      'nemotron-vl',
+                      'Data-efficient Image Transformer',
+                    ),
                   ),
                 ],
               ),

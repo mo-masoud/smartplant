@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_data.dart';
+import 'add_employee_screen.dart';
 import 'widgets/pressable.dart';
 
 class DataMgmtScreen extends StatefulWidget {
@@ -283,7 +284,11 @@ class _DataMgmtScreenState extends State<DataMgmtScreen> {
                 Text(emp.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: theme.textTheme.bodyLarge?.color)),
                 Text(emp.role, style: TextStyle(color: theme.hintColor, fontSize: 13)),
               ])),
-              _buildActionButtons(() {}, () => _showDeleteDialog(context, 'Employee', emp.name, () => AppData().removeEmployee(emp.id)), isDark),
+              _buildActionButtons(
+                () => Navigator.push(context, MaterialPageRoute(builder: (_) => AddEmployeeScreen(employeeToEdit: emp))),
+                () => _showDeleteDialog(context, 'Employee', emp.name, () => AppData().removeEmployee(emp.id)),
+                isDark,
+              ),
             ],
           ),
         ),

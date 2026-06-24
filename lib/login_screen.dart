@@ -11,7 +11,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
@@ -32,20 +33,33 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
 
     _logoScale = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _entranceController, curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack)),
+      CurvedAnimation(
+        parent: _entranceController,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack),
+      ),
     );
 
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _entranceController, curve: const Interval(0.0, 0.4, curve: Curves.easeIn)),
+      CurvedAnimation(
+        parent: _entranceController,
+        curve: const Interval(0.0, 0.4, curve: Curves.easeIn),
+      ),
     );
 
     _cardOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _entranceController, curve: const Interval(0.4, 0.8, curve: Curves.easeIn)),
+      CurvedAnimation(
+        parent: _entranceController,
+        curve: const Interval(0.4, 0.8, curve: Curves.easeIn),
+      ),
     );
 
-    _cardSlide = Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero).animate(
-      CurvedAnimation(parent: _entranceController, curve: const Interval(0.4, 1.0, curve: Curves.easeOutQuart)),
-    );
+    _cardSlide = Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _entranceController,
+            curve: const Interval(0.4, 1.0, curve: Curves.easeOutQuart),
+          ),
+        );
 
     _entranceController.forward();
   }
@@ -68,12 +82,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     }
 
     final employee = AppData().findEmployeeByUsername(username);
-    
+
     if (username.toLowerCase() == 'mahmoud' || employee != null) {
       AppData().currentUser = employee?.name ?? 'Mahmoud Massoud';
       String role = employee?.role ?? 'Admin';
       AppData().currentUserRole = role;
-      
+
       if (role == 'Admin') {
         Navigator.pushReplacementNamed(context, '/main');
       } else {
@@ -102,18 +116,24 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   gradient: RadialGradient(
                     center: Alignment.center,
                     radius: 1.2,
-                    colors: isDark 
-                      ? [const Color(0xFF042016), const Color(0xFF02100B), const Color(0xFF000000)]
-                      : [const Color(0xFF0A5A3D), const Color(0xFF06402B), const Color(0xFF042B1D)],
+                    colors: isDark
+                        ? [
+                            const Color(0xFF042016),
+                            const Color(0xFF02100B),
+                            const Color(0xFF000000),
+                          ]
+                        : [
+                            const Color(0xFF0A5A3D),
+                            const Color(0xFF06402B),
+                            const Color(0xFF042B1D),
+                          ],
                   ),
                 ),
               ),
             ),
             Positioned.fill(
               child: RepaintBoundary(
-                child: CustomPaint(
-                  painter: LoginGrainPainter(),
-                ),
+                child: CustomPaint(painter: LoginGrainPainter()),
               ),
             ),
             SafeArea(
@@ -156,10 +176,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
-                  BoxShadow(color: Colors.white.withAlpha(20), blurRadius: 30, spreadRadius: 5),
+                  BoxShadow(
+                    color: Colors.white.withAlpha(20),
+                    blurRadius: 30,
+                    spreadRadius: 5,
+                  ),
                 ],
               ),
-              child: const Icon(Icons.eco_rounded, size: 60, color: Color(0xFF06402B)),
+              child: const Icon(
+                Icons.eco_rounded,
+                size: 60,
+                color: Color(0xFF06402B),
+              ),
             ),
           ),
         ),
@@ -167,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         FadeTransition(
           opacity: _logoOpacity,
           child: const Text(
-            'Industrial Plant',
+            'Smart Plant',
             style: TextStyle(
               color: Colors.white,
               fontSize: 28,
@@ -203,7 +231,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             color: isDark ? theme.cardColor : Colors.white.withAlpha(245),
             borderRadius: BorderRadius.circular(35),
             boxShadow: [
-              BoxShadow(color: Colors.black.withAlpha(isDark ? 60 : 40), blurRadius: 40, offset: const Offset(0, 20)),
+              BoxShadow(
+                color: Colors.black.withAlpha(isDark ? 60 : 40),
+                blurRadius: 40,
+                offset: const Offset(0, 20),
+              ),
             ],
           ),
           child: Column(
@@ -212,7 +244,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
+                  color: isDark
+                      ? const Color(0xFF042016)
+                      : const Color(0xFF06402B),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(35),
                     topRight: Radius.circular(35),
@@ -222,14 +256,22 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   children: [
                     const Text(
                       'Employee Login',
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Container(height: 3, width: 40, color: Colors.white.withAlpha(60)),
+                    Container(
+                      height: 3,
+                      width: 40,
+                      color: Colors.white.withAlpha(60),
+                    ),
                   ],
                 ),
               ),
-              
+
               Padding(
                 padding: const EdgeInsets.all(32),
                 child: Column(
@@ -238,10 +280,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     if (_errorMessage.isNotEmpty) _buildErrorLabel(),
                     _buildLabel('Username', theme),
                     _buildTextField(
-                      controller: _usernameController, 
-                      icon: Icons.person_outline, 
-                      hint: 'Enter your username', 
-                      theme: theme, 
+                      controller: _usernameController,
+                      icon: Icons.person_outline,
+                      hint: 'Enter your username',
+                      theme: theme,
                       isDark: isDark,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
@@ -249,33 +291,16 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     const SizedBox(height: 24),
                     _buildLabel('Password', theme),
                     _buildTextField(
-                      controller: _passwordController, 
-                      icon: Icons.lock_outline, 
-                      hint: 'Enter your password', 
-                      theme: theme, 
-                      isDark: isDark, 
+                      controller: _passwordController,
+                      icon: Icons.lock_outline,
+                      hint: 'Enter your password',
+                      theme: theme,
+                      isDark: isDark,
                       isPassword: true,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _handleLogin(),
                     ),
-                    
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Pressable(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                              color: isDark ? Colors.greenAccent : const Color(0xFF06402B),
-                              fontWeight: FontWeight.w600
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
+
                     const SizedBox(height: 24),
                     _buildLoginButton(isDark),
                   ],
@@ -293,17 +318,21 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       padding: const EdgeInsets.only(left: 4, bottom: 10),
       child: Text(
         label,
-        style: TextStyle(color: theme.textTheme.bodyLarge?.color, fontWeight: FontWeight.bold, fontSize: 14),
+        style: TextStyle(
+          color: theme.textTheme.bodyLarge?.color,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
       ),
     );
   }
 
   Widget _buildTextField({
-    required TextEditingController controller, 
-    required IconData icon, 
-    required String hint, 
-    required ThemeData theme, 
-    required bool isDark, 
+    required TextEditingController controller,
+    required IconData icon,
+    required String hint,
+    required ThemeData theme,
+    required bool isDark,
     bool isPassword = false,
     TextInputType? keyboardType,
     TextInputAction? textInputAction,
@@ -322,7 +351,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         onSubmitted: onSubmitted,
         style: TextStyle(color: theme.textTheme.bodyLarge?.color),
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: isDark ? Colors.greenAccent : const Color(0xFF06402B), size: 20),
+          prefixIcon: Icon(
+            icon,
+            color: isDark ? Colors.greenAccent : const Color(0xFF06402B),
+            size: 20,
+          ),
           hintText: hint,
           hintStyle: TextStyle(color: theme.hintColor, fontSize: 14),
           border: InputBorder.none,
@@ -340,16 +373,23 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         child: ElevatedButton(
           onPressed: _handleLogin,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isDark ? const Color(0xFF042016) : const Color(0xFF06402B),
+            backgroundColor: isDark
+                ? const Color(0xFF042016)
+                : const Color(0xFF06402B),
             foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
             elevation: 8,
             shadowColor: const Color(0xFF06402B).withAlpha(100),
           ),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Access System', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(
+                'Access System',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               SizedBox(width: 8),
               Icon(Icons.arrow_forward_rounded, size: 20),
             ],
@@ -362,7 +402,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   Widget _buildErrorLabel() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: Text(_errorMessage, style: const TextStyle(color: Colors.red, fontSize: 12, fontWeight: FontWeight.w500)),
+      child: Text(
+        _errorMessage,
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 
@@ -377,13 +424,27 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent, size: 18),
+          Icon(
+            Icons.warning_amber_rounded,
+            color: Colors.orangeAccent,
+            size: 18,
+          ),
           SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Internal Company System Only', style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold)),
-              Text('Unauthorized access is prohibited', style: TextStyle(color: Colors.white38, fontSize: 10)),
+              Text(
+                'Internal Company System Only',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Unauthorized access is prohibited',
+                style: TextStyle(color: Colors.white38, fontSize: 10),
+              ),
             ],
           ),
         ],
@@ -395,15 +456,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 class LoginGrainPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final random = math.Random(42); 
+    final random = math.Random(42);
     final paint = Paint()..strokeWidth = 1.0;
     for (int i = 0; i < 5000; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
       final isWhite = random.nextBool();
-      paint.color = (isWhite ? Colors.white : Colors.black).withAlpha(random.nextInt(8) + 2);
+      paint.color = (isWhite ? Colors.white : Colors.black).withAlpha(
+        random.nextInt(8) + 2,
+      );
       canvas.drawPoints(PointMode.points, [Offset(x, y)], paint);
     }
   }
-  @override bool shouldRepaint(CustomPainter oldDelegate) => false;
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

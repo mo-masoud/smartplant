@@ -7,7 +7,6 @@ import 'scan_screen.dart';
 import 'records_screen.dart';
 import 'reports_screen.dart';
 import 'profile_screen.dart';
-import 'notification_screen.dart';
 import 'widgets/pressable.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -137,19 +136,6 @@ class DashboardScreen extends StatelessWidget {
               ),
             ],
           ),
-          ),
-        ),
-        Pressable(
-          child: GestureDetector(
-            onTap: () => Navigator.push(context, _createSimpleRoute(const NotificationScreen())),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(25),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(Icons.notifications_none, color: Colors.white),
-            ),
           ),
         ),
       ],

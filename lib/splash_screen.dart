@@ -10,7 +10,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _logoScale;
   late Animation<double> _logoOpacity;
@@ -27,19 +28,31 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     );
 
     _logoScale = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.6, curve: Curves.elasticOut)),
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.6, curve: Curves.elasticOut),
+      ),
     );
 
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.4, curve: Curves.easeIn)),
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.4, curve: Curves.easeIn),
+      ),
     );
 
     _textSlide = Tween<double>(begin: 30.0, end: 0.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.9, curve: Curves.easeOutCubic)),
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.5, 0.9, curve: Curves.easeOutCubic),
+      ),
     );
 
     _textOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.9, curve: Curves.easeIn)),
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.5, 0.9, curve: Curves.easeIn),
+      ),
     );
 
     _glowAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
@@ -59,7 +72,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const LoginScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -87,21 +101,17 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 center: Alignment.center,
                 radius: 1.2,
                 colors: [
-                  Color(0xFF0A5A3D), 
-                  Color(0xFF06402B), 
-                  Color(0xFF042B1D), 
+                  Color(0xFF0A5A3D),
+                  Color(0xFF06402B),
+                  Color(0xFF042B1D),
                 ],
               ),
             ),
           ),
 
           // 2. Texture Overlay (Grain/Noise)
-          Positioned.fill(
-            child: CustomPaint(
-              painter: TexturePainter(),
-            ),
-          ),
-          
+          Positioned.fill(child: CustomPaint(painter: TexturePainter())),
+
           Center(
             child: AnimatedBuilder(
               animation: _controller,
@@ -158,7 +168,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                                   Icon(
                                     Icons.eco_rounded,
                                     size: 80,
-                                    color: const Color(0xFF06402B).withAlpha(40),
+                                    color: const Color(
+                                      0xFF06402B,
+                                    ).withAlpha(40),
                                   ),
                                   const Icon(
                                     Icons.eco_outlined,
@@ -173,7 +185,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       ],
                     ),
                     const SizedBox(height: 50),
-                    
+
                     // Animated Luminous Text
                     Opacity(
                       opacity: _textOpacity.value,
@@ -182,7 +194,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         child: Column(
                           children: [
                             const Text(
-                              'Industrial Plant',
+                              'Smart Plant',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 34,
@@ -211,9 +223,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 100),
-                    
+
                     // Subtle Light line
                     Opacity(
                       opacity: _textOpacity.value,
@@ -246,19 +258,20 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 class TexturePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final random = math.Random(42); 
-    final paint = Paint()
-      ..strokeWidth = 1.0;
+    final random = math.Random(42);
+    final paint = Paint()..strokeWidth = 1.0;
 
     // Draw thousands of tiny dots with varying very low opacities
     for (int i = 0; i < 15000; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
-      
+
       // Some dots are white (highlights), some are black (shadows)
       final isWhite = random.nextBool();
-      paint.color = (isWhite ? Colors.white : Colors.black).withAlpha(random.nextInt(8) + 2);
-      
+      paint.color = (isWhite ? Colors.white : Colors.black).withAlpha(
+        random.nextInt(8) + 2,
+      );
+
       canvas.drawPoints(PointMode.points, [Offset(x, y)], paint);
     }
   }
